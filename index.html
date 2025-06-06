@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Challenger Circuit AMER Apex Legends Stats</title>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #eee; }
     h1 { font-size: 1.2rem; line-height: 1.5rem; margin-bottom: 2em; font-weight: normal; }
@@ -19,6 +20,15 @@
     .filter-group label { display: block; margin-bottom: 0.2em; }
     .filter-group select { width: 100%; padding: 5px; }
     .button-container { margin-top: 1em; display: flex; gap: 1em; }
+    table.dataTable thead th {background-color: #222 !important; color: #eee !important; border-bottom: 1px solid #444 !important;}
+    .fixedHeader-floating {  background-color: #222 !important;  color: #eee !important;  border-bottom: 1px solid #444 !important;  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);}
+    table.dataTable tbody tr {  background-color: #111;  color: #eee;}
+    table.dataTable td, table.dataTable th { border: 1px solid #333; padding: 8px;}
+    table.dataTable tbody tr:nth-child(even) {background-color: #181818;}
+    .filter-group select { background-color: #222; color: #eee; border: 1px solid #444;}
+    .dataTables_wrapper::-webkit-scrollbar {height: 10px;}
+    .dataTables_wrapper::-webkit-scrollbar-thumb {background-color: #444;}
+    .dataTables_wrapper::-webkit-scrollbar-track {background-color: #222;}
   </style>
 </head>
 <body>
@@ -1793,6 +1803,7 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
 <script>
   const filterOptions = {
     'Games Played': [1,10,20,30,40,50,60,70],
@@ -1835,7 +1846,13 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
   });
 
   $(document).ready(function () {
-    const table = $('#statsTable').DataTable({ scrollX: true, paging: false, order: [], ordering: true });
+  const table = $('#statsTable').DataTable({
+    scrollX: true,
+    paging: false,
+    order: [],
+    ordering: true,
+    fixedHeader: true
+  });
 
     headers.forEach((header, idx) => { columnMap[header] = idx + 1; });
 
