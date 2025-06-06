@@ -1851,8 +1851,12 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
     paging: false,
     order: [],
     ordering: true,
-    fixedHeader: true
+    fixedHeader: true,
+    columnDefs: [
+      { targets: 0, orderable: false }
+    ]
   });
+
 
     headers.forEach((header, idx) => { columnMap[header] = idx + 1; });
 
