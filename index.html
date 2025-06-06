@@ -1801,7 +1801,7 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
 1725th,M3T4L,1,0,0,0,0,0.00%,144,0.00%,0,0,359,0.00%,0.00%,0.001,F
   </script>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
 <script>
@@ -1853,9 +1853,24 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
     ordering: true,
     fixedHeader: true,
     columnDefs: [
-      { targets: 0, orderable: false }
+      { targets: 0, orderable: false } // disable sorting on Rank column
     ]
   });
+
+  // Dynamically update Rank numbers to reflect current order
+  table.on('order.dt search.dt draw.dt', function () {
+    table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+      const suffix = (n) => {
+        const j = n % 10, k = n % 100;
+        if (j === 1 && k !== 11) return 'st';
+        if (j === 2 && k !== 12) return 'nd';
+        if (j === 3 && k !== 13) return 'rd';
+        return 'th';
+      };
+      const rank = i + 1;
+      cell.innerHTML = `${rank}${suffix(rank)}`;
+    });
+  }).draw();
 
 
     headers.forEach((header, idx) => { columnMap[header] = idx + 1; });
