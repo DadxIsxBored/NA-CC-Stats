@@ -1890,33 +1890,36 @@ Rank,Player,Games Played,Kills per Game,Kills,Assists,Knocks,Knock Conversion Ra
     }
 
     function applyFilters() {
-      table.rows().every(function () {
-        const row = this.data();
-        const cells = row;
-        let show = true;
+  $.fn.dataTable.ext.search = [];
 
-        $('#filterForm select').each(function () {
-          const colIdx = +this.dataset.column;
-          const val = this.value;
-          if (!val) return;
-          const cellVal = cells[colIdx];
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+    let show = true;
 
-          const numVal = parseFloat(cellVal.replace('%','').replace(',',''));
-          const filterNum = parseFloat(val.replace('%','').replace(',','').replace('<',''));
+    $('#filterForm select').each(function () {
+      const colIdx = +this.dataset.column;
+      const val = this.value;
+      if (!val) return;
 
-          if (val.startsWith('<')) {
-            if (numVal >= filterNum) show = false;
-          } else if (val.endsWith('+')) {
-            if (numVal < filterNum) show = false;
-          } else if (!isNaN(filterNum)) {
-            if (numVal < filterNum) show = false;
-          } else {
-            if (cellVal !== val) show = false;
-          }
-        });
-        this.node().style.display = show ? '' : 'none';
-      });
-    }
+      const cellVal = data[colIdx];
+      const numVal = parseFloat(cellVal.replace('%', '').replace(',', ''));
+      const filterNum = parseFloat(val.replace('%', '').replace(',', '').replace('<', ''));
+
+      if (val.startsWith('<')) {
+        if (numVal >= filterNum) show = false;
+      } else if (val.endsWith('+')) {
+        if (numVal < filterNum) show = false;
+      } else if (!isNaN(filterNum)) {
+        if (numVal < filterNum) show = false;
+      } else {
+        if (cellVal !== val) show = false;
+      }
+    });
+
+    return show;
+  });
+
+  table.draw();
+}
 
     function resetFilters() {
       $('#filterForm select').val('');
